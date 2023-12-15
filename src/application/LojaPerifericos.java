@@ -9,9 +9,6 @@ public class LojaPerifericos {
         Menu menu = new Menu();
         Locale.setDefault(Locale.US);
 
-
         menu.showMenu();
-
-
     }
 }

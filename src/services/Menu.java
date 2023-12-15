@@ -1,5 +1,6 @@
 package services;
 
+import entities.Funcionario;
 import entities.Produto;
 import entities.Cliente;
 
@@ -7,17 +8,12 @@ import java.util.*;
 
 public class Menu {
 
-
     Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
-    Cliente cliente = new Cliente();
-
-    Produto produto = new Produto();
-
-    String loginFunc = "admin";
-    String senhaFunc = "123";
+    private final Cliente cliente = new Cliente();
+    private final Produto produto = new Produto();
+    private final Funcionario funcionario = new Funcionario("Administrador", "admin", "123");
 
     public Menu() {
-
     }
 
     public void showMenu() {
@@ -30,108 +26,144 @@ public class Menu {
         boolean logado = false;
 
         while (!logado) {
-            if (ch == 'c') {
-                System.out.println("O que você deseja? ");
-                System.out.println("1- Realizar login\n2- Criar conta");
-                System.out.print("Sua escolha: ");
-                int escolha = scanner.nextInt();
-
-                if (escolha == 1) {
-                    if (cliente.logar()) {
-                        logado = true;
+            try {
+                if (ch == 'c') {
+                    System.out.println("O que você deseja? ");
+                    System.out.println("1- Realizar login\n2- Criar conta");
+                    System.out.print("Sua escolha: ");
+                    int escolha = scanner.nextInt();
+                    if (escolha == 1) {
+                        if (cliente.logar()) {
+                            logado = true;
+                        }
+                    } else if (escolha == 2) {
+                        cliente.criarContaCliente();
+                    } else {
+                        System.out.println("Escolha inválida ");
                     }
-                } else if (escolha == 2) {
-                    cliente.criarContaCliente();
+                } else if (ch == 'f') {
+                    scanner.nextLine();
+                    System.out.print("Digite o seu email de funcionário: ");
+                    String login = scanner.nextLine().trim();
+                    System.out.print("Digite a sua senha: ");
+                    String senha = scanner.nextLine().trim();
+
+                    if (funcionario.logar(login, senha)) {
+                        logado = true;
+                        System.out.println("LOGIN REALIZADO COM SUCESSO, BEM VINDO(A)! ");
+                        System.out.println();
+                        menuFuncionario();
+                    } else {
+                        System.out.println("VOCÊ DIGITOU O LOGIN OU A SENHA INCORRETAMENTE, TENTE NOVAMENTE.");
+                    }
                 } else {
-                    System.out.println("Escolha inválida ");
+                    System.out.println("Entrada inválida.");
+                    break;
                 }
-            } else if (ch == 'f') {
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor, digite um número.");
                 scanner.nextLine();
-                System.out.print("Digite o seu login de funcionário: ");
-                String login = scanner.nextLine();
-                System.out.print("Digite a sua senha: ");
-                String senha = scanner.nextLine();
-
-                if (login.equalsIgnoreCase(loginFunc) && senha.equalsIgnoreCase(senhaFunc)) {
-                    logado = true;
-                    System.out.println("LOGIN REALIZADO COM SUCESSO");
-                    System.out.println();
-                    menuFuncionario();
-                } else {
-                    System.out.println("VOCÊ DIGITOU O LOGIN OU A SENHA INCORRETAMENTE, TENTE NOVAMENTE.");
-                }
-            } else {
-                System.out.println("Entrada inválida.");
+            } catch (Exception e) {
+                System.out.println("Ocorreu um erro inesperado: " + e.getMessage());
             }
-
-            scanner.nextLine();
             System.out.println();
         }
 
         if (ch == 'c') {
             menuCliente();
         }
-
     }
 
-
     public void menuFuncionario() {
-        int escolha;
+        int escolha = 0;
         do {
-
-
-            System.out.println("1- Listar produtos disponíveis\n2- Vender produto\n3- Adicionar um novo produto\n4- Alterar informações de um produto\n5- Sair");
-            System.out.print("Sua escolha: ");
-            escolha = scanner.nextInt();
-            scanner.nextLine();
-            System.out.println();
-            switch (escolha) {
-                case 1:
-                    produto.listarProdutosDisponiveis();
-                    break;
-                case 2:
-                    produto.venderProduto();
-                    break;
-                case 3:
-                    produto.addNovoProduto();
-                    break;
-                case 4:
-                    produto.alterarProduto();
-                    break;
-                case 5:
-                    System.out.println("Saindo...");
-                    break;
-                default:
-                    System.out.println("Opção invalida");
+            try {
+                System.out.println("""
+                        1- Listar produtos disponíveis
+                        2- Vender produto
+                        3- Adicionar um novo produto
+                        4- Alterar informações de um produto
+                        5- Voltar ao menu principal
+                        6- Sair do sistema""");
+                System.out.print("Sua escolha: ");
+                escolha = scanner.nextInt();
+                scanner.nextLine();
+                System.out.println();
+                switch (escolha) {
+                    case 1:
+                        produto.listarProdutosDisponiveis();
+                        break;
+                    case 2:
+                        produto.venderProduto();
+                        break;
+                    case 3:
+                        produto.addNovoProduto();
+                        break;
+                    case 4:
+                        produto.alterarProduto();
+                        break;
+                    case 5:
+                        showMenu();
+                        break;
+                    case 6:
+                        System.out.println("Finalizando o sistema...");
+                        break;
+                    default:
+                        System.out.println("Opção inválida. Por favor, escolha novamente.");
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor, digite um número.");
+                scanner.nextLine();
+            } catch (Exception e) {
+                System.out.println("Ocorreu um erro inesperado: " + e.getMessage());
             }
         } while (escolha != 5);
     }
 
-
     public void menuCliente() {
-        int escolha;
+        int escolha = 0;
         do {
-            System.out.println("1- Comprar produto\n2- Procurar produto\n3- Sair");
-            System.out.print("Sua escolha: ");
-            escolha = scanner.nextInt();
-            System.out.println();
+            try {
+                System.out.println("""
+                        1- Comprar produto
+                        2- Procurar produto
+                        3- Retornar ao menu inicial
+                        4- Listar produtos
+                        5- Sair do sistema""");
+                System.out.print("Sua escolha: ");
+                escolha = scanner.nextInt();
+                System.out.println();
+                scanner.nextLine();
 
-            switch (escolha) {
-                case 1:
-                    produto.comprarProduto();
-                    break;
-                case 2:
-                    produto.procurarProduto();
-                    break;
-                case 3:
-                    System.out.println("Saindo...");
-                    break;
-
+                switch (escolha) {
+                    case 1:
+                        produto.comprarProduto();
+                        break;
+                    case 2:
+                        produto.procurarProduto();
+                        break;
+                    case 3:
+                        showMenu();
+                        break;
+                    case 4:
+                        produto.listarProdutosDisponiveis();
+                        break;
+                    case 5:
+                        System.out.println("Encerrando o sistema.");
+                        break;
+                    default:
+                        System.out.println("Opção inválida. Por favor, escolha novamente.");
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor, digite um número.");
+                scanner.nextLine();
+            } catch (Exception e) {
+                System.out.println("Ocorreu um erro inesperado: " + e.getMessage());
             }
-        } while (escolha != 3);
+        } while (escolha != 5);
 
-
+        scanner.close();
     }
-
-
 }

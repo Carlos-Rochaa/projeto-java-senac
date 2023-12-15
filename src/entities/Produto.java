@@ -14,14 +14,22 @@ public class Produto {
     protected String model;
     protected double price;
     protected int inventaryQuantity;
-    private static List<Produto> list = new ArrayList<>();
+    private static final List<Produto> list = new ArrayList<>();
 
 
-    private static Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
+    private static final Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
 
     static {
-        list.add(new Produto("Teclado Mecanico", "MarcaA", "Modelo1", 99.99, 10));
-        list.add(new Produto("Mouse", "MarcaB", "Modelo2", 49.99, 15));
+        list.add(new Produto("Teclado", "Redragon", "Fizz", 99.99, 10));
+        list.add(new Produto("Mouse", "Redragon", "Cobra", 49.99, 15));
+        list.add(new Produto("Headset", "JBL", "Quantum", 149.99, 8));
+        list.add(new Produto("Monitor", "Samsung", "Odyssey", 1499.99, 5));
+        list.add(new Produto("Mousepad", "Hyperx", "Gamer", 19.99, 20));
+        list.add(new Produto("Webcam", "Logitech", "x", 79.99, 12));
+        list.add(new Produto("Teclado", "Machenike", "K500", 79.99, 10));
+        list.add(new Produto("HD", "WD", "500gb", 299.99, 15));
+        list.add(new Produto("SSD", "WD", "M2", 499.99, 7));
+        list.add(new Produto("GABINETE", "Corsair", "RGB", 399.99, 25));
     }
 
     public Produto() {
@@ -104,7 +112,8 @@ public class Produto {
     }
 
     public void alterarProduto() {
-        scanner.nextLine();
+        System.out.println("Lista de produtos disponíveis para alteração ");
+        listarProdutosDisponiveis();
         System.out.print("Digite o nome do produto que deseja alterar:  ");
         String nome = scanner.nextLine();
         System.out.print("Digite o modelo do produto que deseja alterar: ");
@@ -112,14 +121,22 @@ public class Produto {
         for (Produto produto : list) {
             if (produto != null && nome.equalsIgnoreCase(produto.getName()) && modelo.equalsIgnoreCase(produto.getModel())) {
                 System.out.println("Digite o novo nome do produto ");
-                System.out.println("Novo nome: ");
+                System.out.print("Novo nome: ");
                 produto.setName(scanner.nextLine());
+                System.out.println("Digite a nova marca do produto ");
+                System.out.print("Nova marca: ");
+                produto.setBrand(scanner.nextLine());
+                System.out.println("Digite o novo valor do produto ");
+                System.out.print("Novo valor: ");
+                produto.setPrice(scanner.nextDouble());
+                scanner.nextLine();
                 System.out.println("Digite o novo nome do modelo do produto ");
                 System.out.print("Novo modelo: ");
                 produto.setModel(scanner.nextLine());
                 System.out.println("Digite a nova quantidade em estoque do produto");
                 System.out.print("Nova quantidade em estoque: ");
                 produto.setInventaryQuantity(scanner.nextInt());
+                System.out.println();
             }
         }
 
@@ -128,12 +145,12 @@ public class Produto {
 
     public void comprarProduto() {
         scanner.nextLine();
-        System.out.print("Digite o nome do produto que deseja Comprar: ");
+        System.out.print("Digite o nome do produto que deseja comprar: ");
         String nomeProduto = scanner.nextLine();
         System.out.println("Modelos de " + nomeProduto + " disponíveis");
         for (Produto produto : list) {
             if (produto != null && nomeProduto.equalsIgnoreCase(produto.getName())) {
-                System.out.println(nomeProduto + " " + produto.getModel() + " " + produto.getBrand());
+                System.out.println(nomeProduto + " " + produto.getModel() + " " + produto.getBrand() + ", preço:  " + produto.getPrice());
             }
         }
         System.out.print("Qual modelo deseja comprar? ");
