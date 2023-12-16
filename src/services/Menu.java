@@ -98,6 +98,7 @@ public class Menu {
                         break;
                     case 3:
                         produto.addNovoProduto();
+                        scanner.nextLine();
                         break;
                     case 4:
                         produto.alterarProduto();
