@@ -1,21 +1,16 @@
 package entities;
 
-import java.util.ArrayList;
+
+import java.util.Arrays;
 import java.util.List;
 
-public class Funcionario {
-    private String name;
-    private String email;
-    private String senha;
+public class Funcionario extends Pessoa {
 
-    private static final List<Funcionario> list = new ArrayList<>();
+    private static final List<Funcionario> list = Arrays.asList(
+            new Funcionario("Leandro", "leandro@gmail.com", "123"),
+            new Funcionario("Lucas", "lucas@gmail.com", "123")
+    );
 
-    static {
-        Funcionario funcionario1 = new Funcionario("Leandro", "leandromarques@gmail.com", "123");
-        Funcionario funcionario2 = new Funcionario("Lucas", "lucassilva@gmail.com", "123");
-        list.add(funcionario1);
-        list.add(funcionario2);
-    }
 
     public Funcionario() {
 
@@ -23,9 +18,7 @@ public class Funcionario {
 
 
     public Funcionario(String name, String email, String senha) {
-        this.name = name;
-        this.email = email;
-        this.senha = senha;
+        super(name, email, senha);
     }
 
 
